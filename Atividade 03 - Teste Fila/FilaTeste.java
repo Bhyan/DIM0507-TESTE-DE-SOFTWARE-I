@@ -1,5 +1,3 @@
-package fila;
-
 import static org.junit.Assert.*;
 
 import org.junit.*;
@@ -14,6 +12,12 @@ public class FilaTeste {
 	}
 	
 	@Test
+	public void testeGetSetFim() {
+		fila.setFim(5);
+		assertEquals(5, fila.getFim());
+	}
+	
+	@Test
 	public void testeGetTam() {
 		assertEquals(5, fila.getTam());
 	}
@@ -25,7 +29,7 @@ public class FilaTeste {
 	
 	@Test
 	public void testeTamanho() {
-		assertEquals(-1, fila.tamanho());
+		assertEquals(0, fila.tamanho());
 	}
 	
 	@Test
@@ -39,17 +43,11 @@ public class FilaTeste {
 		assertFalse(fila.estaVazia());
 	}	
 	
-	/*
-	 * Com o método tamanho retorna a variável fim, que guarda o índice da fila 
-	 * é o método getTam retorna o tamanho máximo da fila, o jeito mais confiável 
-	 * de testar e utilizando o método removeDaFila, pois ele retorna o primeiro 
-	 * índice, que foi removido da fila. 
-	 */
 	@Test
 	public void testeInserirNaFila() {
 		fila.insereNaFila('1');
 		fila.insereNaFila('2');
-		assertEquals('1', fila.removeDaFila());
+		assertEquals(2, fila.tamanho());
 	}
 	
 	@Test
@@ -61,12 +59,6 @@ public class FilaTeste {
 		assertFalse(fila.estaCheia());
 	}
 
-	/*
-	 * O teste está passando, porém o código da função está errado, pois na 
-	 * função listaCheia compara a variável fim, que é o valor de indexação,
-	 * com a variável tamanho, que é o tamanho da lista. Esses dois valores nunca
-	 * vão ser iguais.
-	 */
 	@Test
 	public void testeListaCheiaVerdadeiro() {
 		fila.insereNaFila('1');
@@ -74,32 +66,47 @@ public class FilaTeste {
 		fila.insereNaFila('3');
 		fila.insereNaFila('4');
 		fila.insereNaFila('5');
-		fila.setFim(5);
 		assertTrue(fila.estaCheia());
 	}
-	
-	/*
-	 * Como a função removeDaFila só sobrescrever o valor da fila, e não altera seu
-	 * tamanho, foi usada a função seguida vezes, para mostrar que o próximo valor 
-	 * removido era diferente do anterior.
-	 */
-	@Test
-	public void testeRemoveDaFila() {
-		fila.insereNaFila('1');
-		fila.insereNaFila('2');
-		fila.insereNaFila('3');
-		assertEquals('1', fila.removeDaFila());
-		assertEquals('2', fila.removeDaFila());
-	}
-	
-	@Test
-	public void testeLimpaFila() {
+
+	@Test(expected = FilaCheiaException.class)
+	public void testeExceptionListaCheia() {
 		fila.insereNaFila('1');
 		fila.insereNaFila('2');
 		fila.insereNaFila('3');
 		fila.insereNaFila('4');
 		fila.insereNaFila('5');
+		fila.insereNaFila('6');
+	}
+	
+	@Test
+	public void testeRemoveDaFila() {
+		fila.insereNaFila('1');
+		fila.insereNaFila('2');
+		fila.insereNaFila('3');
+		assertEquals(3, fila.tamanho());
+		assertEquals('1', fila.removeDaFila());
+		assertEquals(2, fila.tamanho());
+	}
+	
+	@Test(expected = FilaVaziaException.class)
+	public void testeExceptionFilaVazia() {
+		fila.removeDaFila();
+	}
+
+	@Test
+	public void testeLimpaFila() {
+		fila.insereNaFila('1');
+		fila.insereNaFila('2');
+		fila.insereNaFila('3');
+		assertEquals(3, fila.tamanho());
 		fila.limpaFila();
-		assertEquals(-1, fila.getFim());
+		assertEquals(0, fila.tamanho());
+	}
+	
+	@Test(expected = FilaVaziaException.class)
+	public void testeExceptionLimpaFila() {
+		assertEquals(0, fila.tamanho());
+		fila.limpaFila();
 	}
 }

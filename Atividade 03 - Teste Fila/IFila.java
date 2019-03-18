@@ -1,5 +1,3 @@
-package fila;
-
 
 public interface IFila {
 
