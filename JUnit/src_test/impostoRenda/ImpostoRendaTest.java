@@ -1,56 +1,40 @@
 package impostoRenda;
+package banco;
+
 import static org.junit.Assert.*;
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 import param.CalculoImpostoRenda;
 
-public class ImpostoRendaTest {
+@RunWith(Parameterized.class)
+public class testeImpostoRenda {
 	
-	// Teste 10% de imposto para o mínimo valor.
-	@Test
-	public void testCalculoImposto10Inferior() {
-		assertEquals(1321.1, CalculoImpostoRenda.calculaImposto(1201), 01);
-	}
+	@Parameter(0)
+	public double esperado;
 	
-	// Teste 10% de imposto para o maior valor.
-	@Test
-	public void testCalculoImposto10Superio() {
-		assertEquals(5500.0, CalculoImpostoRenda.calculaImposto(5000), 01);
-	}
+	@Parameter(1)
+	public double entrada;
 	
-	// Teste 10% de imposto para o valor central.
-	@Test
-	public void testCalculoImposto10Meio() {
-		assertEquals(2750.0, CalculoImpostoRenda.calculaImposto(2500), 01);
+	@Parameters
+	public static Object[][] data(){
+		return new Object[][] {
+			{1321.1, 1201.0},
+			{5500.0, 5000.0},
+			{2750.0, 2500.0},
+			{8625.0, 7500.0},
+			{1000.0, 1000.0},
+			{5751.15, 5001.0},
+			{11500.0, 10000.0},
+			{12001.2, 10001.1}
+		};
 	}
-	
-	// Teste 15% de imposto para o mínimo valor.
+	 	
 	@Test
-	public void testCalculoImposto15Inferior() {
-		assertEquals(5751.15, CalculoImpostoRenda.calculaImposto(5001), 01);
-	}
-	
-	// Teste 15% de imposto para o maior valor.
-	@Test
-	public void testCalculoImposto15Superior() {
-		assertEquals(11500.0, CalculoImpostoRenda.calculaImposto(10000), 01);
-	}
-	
-	// Teste 15% de imposto para o valor central.
-	@Test
-	public void testCalculoImposto15Meio() {
-		assertEquals(8625.0, CalculoImpostoRenda.calculaImposto(7500), 01);
-	}
-
-	// Teste sem imposto.
-	@Test
-	public void testCalculoImposto0() {
-		assertEquals(1000.0, CalculoImpostoRenda.calculaImposto(1000), 01);
-	}
-	
-	// Teste 20% de imposto.
-	@Test
-	public void testCalculoImposto20() {
-		assertEquals(12001.2, CalculoImpostoRenda.calculaImposto(10001), 01);
+	public void test() {
+		assertEquals(esperado, CalculoImpostoRenda.calculaImposto(entrada), 0.9);
 	}
 }
